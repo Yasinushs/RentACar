@@ -250,6 +250,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "FormCars";
             this.Text = "FormCars";
+            this.Load += new System.EventHandler(this.FormCars_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);

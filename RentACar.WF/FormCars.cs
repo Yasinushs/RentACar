@@ -17,12 +17,24 @@ namespace RentACar.WF
         {
             InitializeComponent();
         }
+        CarsManager carsManager = new CarsManager();
 
         private void toolStripButtonAddCar_Click(object sender, EventArgs e)
         {
-            CarsManager carsManager = new CarsManager();
-            carsManager.CreateCar("","", "");
+          string result=  carsManager.CreateCar("Volswogen California","bla", "1250");
+            CarsListDataGridView();
+            MessageBox.Show(result);
 
+        }
+
+        private void FormCars_Load(object sender, EventArgs e)
+        {
+            CarsListDataGridView();
+        }
+
+        private void CarsListDataGridView()
+        {
+            dataGridView1.DataSource = carsManager.CarList();
         }
     }
 }
