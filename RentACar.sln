@@ -5,6 +5,13 @@ VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentACar.WF", "RentACar.WF\RentACar.WF.csproj", "{8CE91625-B6B7-4370-9C7E-6B053016F8CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentACar.BLL", "RentACar.BLL\RentACar.BLL.csproj", "{D3873CC2-E1FC-436B-9FDA-CE3905D22FB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0E61A9AF-E630-444F-88B2-66ACDD2C455C}"
+	ProjectSection(SolutionItems) = preProject
+		KatmanliMimariTanim.txt = KatmanliMimariTanim.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +22,10 @@ Global
 		{8CE91625-B6B7-4370-9C7E-6B053016F8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CE91625-B6B7-4370-9C7E-6B053016F8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CE91625-B6B7-4370-9C7E-6B053016F8CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3873CC2-E1FC-436B-9FDA-CE3905D22FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3873CC2-E1FC-436B-9FDA-CE3905D22FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3873CC2-E1FC-436B-9FDA-CE3905D22FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3873CC2-E1FC-436B-9FDA-CE3905D22FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

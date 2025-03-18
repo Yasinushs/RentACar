@@ -1,0 +1,7 @@
+UI=> WF=>User Interface: Kullanıcı Arayüzü
+ => Kullanıcının göreceği arayüzdür
+BLL=> Business Logic Layer: İş Katmanı
+=>projenin iş yükünün olduğu katmandır
+DAL=> Data Access Layer: Veri Erişim Katmanı(DLL)
+=> Database işlemlerinin olduğu katmandır
+
