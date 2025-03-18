@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using RentACar.BLL;
 
 namespace RentACar.WF
 {
@@ -15,6 +16,13 @@ namespace RentACar.WF
         public FormCars()
         {
             InitializeComponent();
+        }
+
+        private void toolStripButtonAddCar_Click(object sender, EventArgs e)
+        {
+            CarsManager carsManager = new CarsManager();
+            carsManager.CreateCar("","", "");
+
         }
     }
 }

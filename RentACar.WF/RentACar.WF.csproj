@@ -78,6 +78,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormCars.resx">
+      <DependentUpon>FormCars.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -99,6 +102,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RentACar.BLL\RentACar.BLL.csproj">
+      <Project>{d3873cc2-e1fc-436b-9fda-ce3905d22fb2}</Project>
+      <Name>RentACar.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RentACar.DAL\RentACar.DAL.csproj">
+      <Project>{16c96c3c-6ff0-4f8c-9a14-b45448904c3a}</Project>
+      <Name>RentACar.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
