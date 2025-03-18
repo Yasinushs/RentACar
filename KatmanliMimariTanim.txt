@@ -2,6 +2,8 @@ UI=> WF=>User Interface: Kullanıcı Arayüzü
  => Kullanıcının göreceği arayüzdür
 BLL=> Business Logic Layer: İş Katmanı
 =>projenin iş yükünün olduğu katmandır
-DAL=> Data Access Layer: Veri Erişim Katmanı(DLL)
+DAL=> Data Access Layer: Veri Erişim Katmanı(DLL-Data Logic Layer)
 => Database işlemlerinin olduğu katmandır
+--------------------------------------------------------------------
+OOP=> Object Oriented Programming: Nesne Yönelimli Programlama
 
