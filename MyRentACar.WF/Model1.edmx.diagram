@@ -5,12 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4e35d6fde7e24a9a8464c543a43a0d96" Name="Diagram1">
-        <EntityTypeShape EntityType="YasinRentACarModel.Araclar" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="YasinRentACarModel.Kiralama" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="YasinRentACarModel.Musteriler" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="YasinRentACarModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
-        <AssociationConnector Association="YasinRentACarModel.FK_Kiralama_Araclar1" ManuallyRouted="false" />
-        <AssociationConnector Association="YasinRentACarModel.FK_Kiralama_Musteriler" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="YasinRentACarModel.Araclar" Width="1.5" PointX="0.75" PointY="1.375" />
+        <EntityTypeShape EntityType="YasinRentACarModel.Kiralama" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="YasinRentACarModel.Musteriler" Width="1.5" PointX="0.75" PointY="5.375" />
+        <AssociationConnector Association="YasinRentACarModel.FK_Kiralama_Araclar" />
+        <AssociationConnector Association="YasinRentACarModel.FK_Kiralama_Musteriler" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

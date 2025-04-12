@@ -18,16 +18,18 @@ namespace MyRentACar.WF
         }
 
 
-        private int AraçId;
+        private int kiralamaId;
         YasinRentACarEntities db = new YasinRentACarEntities();
         private void FormKiralama_Load_1(object sender, EventArgs e)
         {
-            
-           dataGridView1.AutoGenerateColumns = true;
-            dataGridView1.DataSource = db.Kiralama.ToList();
-            comboBoxAdSoyad.DataSource = db.Musteriler.ToList();
-            comboBoxAdSoyad.DisplayMember = "AdSoyad";
+
+            dataGridView1.AutoGenerateColumns = true;
+            dataGridView1.DataSource = db.sp_KiralananAraclar1().ToList();
+
+            comboBoxAdSoyad.DisplayMember = "MusteriAdSoyad";
             comboBoxAdSoyad.ValueMember = "MusteriId";
+            comboBoxAdSoyad.DataSource = db.Musteriler.ToList();
+
             comboBoxAracModel.DataSource = db.Araclar.ToList();
             comboBoxAracModel.DisplayMember = "AracModel";
             comboBoxAracModel.ValueMember = "AracId";
@@ -49,19 +51,18 @@ namespace MyRentACar.WF
                 DateTime iadeTarihi = Convert.ToDateTime(dateTimePicker2.Value.ToString("yyyy-MM-dd")); // Tarih formatını belirt
 
 
-                var varmiKayit = db.Kiralama.Where(x => x.MusteriId == AraçId).FirstOrDefault();
+                var varmiKayit = db.Kiralama.Where(x => x.MusteriId == kiralamaId).FirstOrDefault();
                 if (varmiKayit == null)
                 {
                     if (!string.IsNullOrEmpty(musteriAd) && !string.IsNullOrEmpty(aracModel) && kiralamaTarihi != null && iadeTarihi != null)
                     {
                         Kiralama kiralamaEklenecekler = new Kiralama
                         {
-                            AracId = AraçId,
+                            AracId = (int)comboBoxAracModel.SelectedValue,
                             MusteriId = Convert.ToInt32(comboBoxAdSoyad.SelectedValue),
-                            MusteriAdSoyad = musteriAd,
-                            AracModel = aracModel,
                             AlinisTarihi = kiralamaTarihi,
                             IadeTarihi = iadeTarihi,
+                            TeslimTarihi = iadeTarihi,
                             IsActive = true
                         };
                         // Veritabanına ekleme işlemi
@@ -69,7 +70,7 @@ namespace MyRentACar.WF
                         int kayitSonuc = db.SaveChanges();
                         if (kayitSonuc > 0)
                         {
-                            dataGridView1.DataSource = db.Kiralama.ToList();
+                            dataGridView1.DataSource = db.sp_KiralananAraclar1().ToList();
                             MessageBox.Show("Kayıt Başarılı");
                         }
                         else
@@ -105,7 +106,7 @@ namespace MyRentACar.WF
             comboBoxAracModel.Text = "";
             dateTimePicker1.Value = DateTime.Now;
             dateTimePicker2.Value = DateTime.Now.AddDays(7);
-            AraçId = 0;
+            kiralamaId = 0;
         }
 
         private void dataGridView1_DoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -114,18 +115,18 @@ namespace MyRentACar.WF
             comboBoxAracModel.Text = dataGridView1.CurrentRow.Cells["AracModel"].Value.ToString();
             dateTimePicker1.Value = Convert.ToDateTime(dataGridView1.CurrentRow.Cells["AlinisTarihi"].Value);
             dateTimePicker2.Value = Convert.ToDateTime(dataGridView1.CurrentRow.Cells["IadeTarihi"].Value);
-            AraçId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["AracId"].Value);
+            kiralamaId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["KiralamalarId"].Value);
 
         }
 
         private void buttonGUNCELLE_Click(object sender, EventArgs e)
         {
-            if (AraçId > 0)
+            if (kiralamaId > 0)
             {
-                var guncellenecekKayit = db.Kiralama.Where(x => x.AracId == AraçId).FirstOrDefault();
-                
-                var varmiKayit = db.Kiralama.Where(x => x.MusteriAdSoyad == comboBoxAdSoyad.Text).FirstOrDefault();
-                var varmiKayit2 = db.Kiralama.Where(x => x.AracModel == comboBoxAracModel.Text).FirstOrDefault();
+                var guncellenecekKayit = db.Kiralama.Where(x => x.AracId == kiralamaId).FirstOrDefault();
+
+                var varmiKayit = db.Kiralama.Where(x => x.MusteriId == Convert.ToInt32(comboBoxAdSoyad.ValueMember)).FirstOrDefault();
+                var varmiKayit2 = db.Kiralama.Where(x => x.AracId == Convert.ToInt32(comboBoxAracModel.ValueMember)).FirstOrDefault();
                 var varmiKayit3 = db.Kiralama.Where(x => x.AlinisTarihi == dateTimePicker1.Value).FirstOrDefault();
                 var varmiKayit4 = db.Kiralama.Where(x => x.IadeTarihi == dateTimePicker2.Value).FirstOrDefault();
                 if (true)
@@ -138,12 +139,12 @@ namespace MyRentACar.WF
 
         private void buttonSIL_Click(object sender, EventArgs e)
         {
-            if (AraçId == 0)
+            if (kiralamaId == 0)
             {
                 MessageBox.Show("Lütfen Silmek İstediğiniz KayıdI Seçin");
                 return;
             }
-            var silinecekKayit = db.Kiralama.Where(x => x.AracId == AraçId).FirstOrDefault();
+            var silinecekKayit = db.Kiralama.Where(x => x.AracId == kiralamaId).FirstOrDefault();
             silinecekKayit.IsActive = false;
             int silSonuc = db.SaveChanges();
             if (silSonuc > 0)
@@ -163,6 +164,6 @@ namespace MyRentACar.WF
             Temizle();
         }
 
-       
+
     }
 }

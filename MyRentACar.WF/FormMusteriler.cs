@@ -15,14 +15,14 @@ namespace MyRentACar.WF
     public partial class FormMusteriler: Form
     {
         private int musteriId;
-        YasinRentACarEntities db = new YasinRentACarEntities();
+       YasinRentACarEntities db = new YasinRentACarEntities();
         public FormMusteriler()
         {
             InitializeComponent();
         }
         private void FormMusteriler_Load_1(object sender, EventArgs e)
         {
-            YasinRentACarEntities db = new YasinRentACarEntities();
+           // YasinRentACarEntities db = new YasinRentACarEntities();
             dataGridView2.DataSource = db.Musteriler.ToList();
            
 

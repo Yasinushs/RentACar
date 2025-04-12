@@ -14,12 +14,19 @@ namespace MyRentACar.WF
     
     public partial class Araclar
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Araclar()
+        {
+            this.Kiralama = new HashSet<Kiralama>();
+        }
+    
         public int AracId { get; set; }
         public string AracModel { get; set; }
         public System.DateTime AracEklenmeTarih { get; set; }
         public string AracMusaitlik { get; set; }
         public Nullable<bool> IsActive { get; set; }
     
-        public virtual Kiralama Kiralama { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Kiralama> Kiralama { get; set; }
     }
 }

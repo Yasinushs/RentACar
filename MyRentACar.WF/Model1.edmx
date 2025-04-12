@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="YasinRentACarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="YasinRentACarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Araclar">
           <Key>
             <PropertyRef Name="AracId" />
@@ -17,15 +17,16 @@
         </EntityType>
         <EntityType Name="Kiralama">
           <Key>
-            <PropertyRef Name="AracId" />
+            <PropertyRef Name="KiralamalarId" />
           </Key>
-          <Property Name="AracId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KiralamalarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AracId" Type="int" Nullable="false" />
           <Property Name="MusteriId" Type="int" Nullable="false" />
-          <Property Name="MusteriAdSoyad" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AracModel" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AlinisTarihi" Type="date" Nullable="false" />
-          <Property Name="IadeTarihi" Type="date" Nullable="false" />
-          <Property Name="IsActive" Type="bit" />
+          <Property Name="AlinisTarihi" Type="datetime" Nullable="false" />
+          <Property Name="IadeTarihi" Type="datetime" Nullable="false" />
+          <Property Name="TeslimTarihi" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Aciklama" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Musteriler">
           <Key>
@@ -37,19 +38,9 @@
           <Property Name="MusteriEklenmeZamani" Type="datetime" Nullable="false" />
           <Property Name="İsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
-        <Association Name="FK_Kiralama_Araclar1">
+        <Association Name="FK_Kiralama_Araclar">
           <End Role="Araclar" Type="Self.Araclar" Multiplicity="1" />
-          <End Role="Kiralama" Type="Self.Kiralama" Multiplicity="0..1" />
+          <End Role="Kiralama" Type="Self.Kiralama" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Araclar">
               <PropertyRef Name="AracId" />
@@ -71,12 +62,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_KiralananAraclar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_KiralananAraclar1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="YasinRentACarModelStoreContainer">
           <EntitySet Name="Araclar" EntityType="Self.Araclar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Kiralama" EntityType="Self.Kiralama" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Musteriler" EntityType="Self.Musteriler" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Kiralama_Araclar1" Association="Self.FK_Kiralama_Araclar1">
+          <AssociationSet Name="FK_Kiralama_Araclar" Association="Self.FK_Kiralama_Araclar">
             <End Role="Araclar" EntitySet="Araclar" />
             <End Role="Kiralama" EntitySet="Kiralama" />
           </AssociationSet>
@@ -85,60 +108,113 @@
             <End Role="Kiralama" EntitySet="Kiralama" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="YasinRentACarModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="YasinRentACarEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(YasinRentACarModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(YasinRentACarModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="sp_KiralananAraclar" ReturnType="Collection(YasinRentACarModel.sp_KiralananAraclar_Result)" />
+          <EntitySet Name="Araclar" EntityType="YasinRentACarModel.Araclar" />
+          <EntitySet Name="Kiralama" EntityType="YasinRentACarModel.Kiralama" />
+          <EntitySet Name="Musteriler" EntityType="YasinRentACarModel.Musteriler" />
+          <AssociationSet Name="FK_Kiralama_Araclar" Association="YasinRentACarModel.FK_Kiralama_Araclar">
+            <End Role="Araclar" EntitySet="Araclar" />
+            <End Role="Kiralama" EntitySet="Kiralama" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kiralama_Musteriler" Association="YasinRentACarModel.FK_Kiralama_Musteriler">
+            <End Role="Musteriler" EntitySet="Musteriler" />
+            <End Role="Kiralama" EntitySet="Kiralama" />
+          </AssociationSet>
+          <FunctionImport Name="sp_KiralananAraclar1" ReturnType="Collection(YasinRentACarModel.sp_KiralananAraclar1_Result)" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_KiralananAraclar_Result">
+          <Property Type="String" Name="MusteriAdSoyad" Nullable="false" />
+          <Property Type="String" Name="AracModel" Nullable="false" MaxLength="150" />
+          <Property Type="DateTime" Name="AlinisTarihi" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="IadeTarihi" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="TeslimTarihi" Nullable="false" Precision="23" />
+        </ComplexType>
         <EntityType Name="Araclar">
           <Key>
             <PropertyRef Name="AracId" />
           </Key>
           <Property Name="AracId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AracModel" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AracModel" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="AracEklenmeTarih" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AracMusaitlik" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AracMusaitlik" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="Kiralama" Relationship="Self.FK_Kiralama_Araclar1" FromRole="Araclar" ToRole="Kiralama" />
+          <NavigationProperty Name="Kiralama" Relationship="YasinRentACarModel.FK_Kiralama_Araclar" FromRole="Araclar" ToRole="Kiralama" />
         </EntityType>
         <EntityType Name="Kiralama">
           <Key>
-            <PropertyRef Name="AracId" />
+            <PropertyRef Name="KiralamalarId" />
           </Key>
-          <Property Name="AracId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KiralamalarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AracId" Type="Int32" Nullable="false" />
           <Property Name="MusteriId" Type="Int32" Nullable="false" />
-          <Property Name="MusteriAdSoyad" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AracModel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AlinisTarihi" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="IadeTarihi" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="Araclar" Relationship="Self.FK_Kiralama_Araclar1" FromRole="Kiralama" ToRole="Araclar" />
-          <NavigationProperty Name="Musteriler" Relationship="Self.FK_Kiralama_Musteriler" FromRole="Kiralama" ToRole="Musteriler" />
+          <Property Name="AlinisTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IadeTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TeslimTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Aciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Araclar" Relationship="YasinRentACarModel.FK_Kiralama_Araclar" FromRole="Kiralama" ToRole="Araclar" />
+          <NavigationProperty Name="Musteriler" Relationship="YasinRentACarModel.FK_Kiralama_Musteriler" FromRole="Kiralama" ToRole="Musteriler" />
         </EntityType>
         <EntityType Name="Musteriler">
           <Key>
             <PropertyRef Name="MusteriId" />
           </Key>
           <Property Name="MusteriId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MusteriAdSoyad" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MusteriNo" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MusteriAdSoyad" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MusteriNo" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="true" />
           <Property Name="MusteriEklenmeZamani" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="İsActive" Type="Boolean" />
-          <NavigationProperty Name="Kiralama" Relationship="Self.FK_Kiralama_Musteriler" FromRole="Musteriler" ToRole="Kiralama" />
+          <NavigationProperty Name="Kiralama" Relationship="YasinRentACarModel.FK_Kiralama_Musteriler" FromRole="Musteriler" ToRole="Kiralama" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <Association Name="FK_Kiralama_Araclar1">
-          <End Role="Araclar" Type="Self.Araclar" Multiplicity="1" />
-          <End Role="Kiralama" Type="Self.Kiralama" Multiplicity="0..1" />
+        <Association Name="FK_Kiralama_Araclar">
+          <End Type="YasinRentACarModel.Araclar" Role="Araclar" Multiplicity="1" />
+          <End Type="YasinRentACarModel.Kiralama" Role="Kiralama" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Araclar">
               <PropertyRef Name="AracId" />
@@ -149,8 +225,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Kiralama_Musteriler">
-          <End Role="Musteriler" Type="Self.Musteriler" Multiplicity="1" />
-          <End Role="Kiralama" Type="Self.Kiralama" Multiplicity="*" />
+          <End Type="YasinRentACarModel.Musteriler" Role="Musteriler" Multiplicity="1" />
+          <End Type="YasinRentACarModel.Kiralama" Role="Kiralama" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Musteriler">
               <PropertyRef Name="MusteriId" />
@@ -160,72 +236,103 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="YasinRentACarEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Araclar" EntityType="Self.Araclar" />
-          <EntitySet Name="Kiralama" EntityType="Self.Kiralama" />
-          <EntitySet Name="Musteriler" EntityType="Self.Musteriler" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-          <AssociationSet Name="FK_Kiralama_Araclar1" Association="Self.FK_Kiralama_Araclar1">
-            <End Role="Araclar" EntitySet="Araclar" />
-            <End Role="Kiralama" EntitySet="Kiralama" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Kiralama_Musteriler" Association="Self.FK_Kiralama_Musteriler">
-            <End Role="Musteriler" EntitySet="Musteriler" />
-            <End Role="Kiralama" EntitySet="Kiralama" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        <ComplexType Name="sp_KiralananAraclar1_Result">
+          <Property Type="Int32" Name="KiralamalarId" Nullable="false" />
+          <Property Type="String" Name="MusteriAdSoyad" Nullable="false" />
+          <Property Type="String" Name="AracModel" Nullable="false" MaxLength="150" />
+          <Property Type="DateTime" Name="AlinisTarihi" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="IadeTarihi" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="TeslimTarihi" Nullable="false" Precision="23" />
+        </ComplexType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="YasinRentACarModelStoreContainer" CdmEntityContainer="YasinRentACarEntities">
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="YasinRentACarModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="YasinRentACarModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="YasinRentACarModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="YasinRentACarModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="YasinRentACarModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="YasinRentACarModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="YasinRentACarModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="YasinRentACarModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="YasinRentACarModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="sp_KiralananAraclar" FunctionName="YasinRentACarModel.Store.sp_KiralananAraclar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="YasinRentACarModel.sp_KiralananAraclar_Result">
+                <ScalarProperty Name="MusteriAdSoyad" ColumnName="MusteriAdSoyad" />
+                <ScalarProperty Name="AracModel" ColumnName="AracModel" />
+                <ScalarProperty Name="AlinisTarihi" ColumnName="AlinisTarihi" />
+                <ScalarProperty Name="IadeTarihi" ColumnName="IadeTarihi" />
+                <ScalarProperty Name="TeslimTarihi" ColumnName="TeslimTarihi" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="Araclar">
             <EntityTypeMapping TypeName="YasinRentACarModel.Araclar">
               <MappingFragment StoreEntitySet="Araclar">
-                <ScalarProperty Name="AracId" ColumnName="AracId" />
-                <ScalarProperty Name="AracModel" ColumnName="AracModel" />
-                <ScalarProperty Name="AracEklenmeTarih" ColumnName="AracEklenmeTarih" />
-                <ScalarProperty Name="AracMusaitlik" ColumnName="AracMusaitlik" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AracMusaitlik" ColumnName="AracMusaitlik" />
+                <ScalarProperty Name="AracEklenmeTarih" ColumnName="AracEklenmeTarih" />
+                <ScalarProperty Name="AracModel" ColumnName="AracModel" />
+                <ScalarProperty Name="AracId" ColumnName="AracId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Kiralama">
             <EntityTypeMapping TypeName="YasinRentACarModel.Kiralama">
               <MappingFragment StoreEntitySet="Kiralama">
-                <ScalarProperty Name="AracId" ColumnName="AracId" />
-                <ScalarProperty Name="MusteriId" ColumnName="MusteriId" />
-                <ScalarProperty Name="MusteriAdSoyad" ColumnName="MusteriAdSoyad" />
-                <ScalarProperty Name="AracModel" ColumnName="AracModel" />
-                <ScalarProperty Name="AlinisTarihi" ColumnName="AlinisTarihi" />
-                <ScalarProperty Name="IadeTarihi" ColumnName="IadeTarihi" />
+                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="TeslimTarihi" ColumnName="TeslimTarihi" />
+                <ScalarProperty Name="IadeTarihi" ColumnName="IadeTarihi" />
+                <ScalarProperty Name="AlinisTarihi" ColumnName="AlinisTarihi" />
+                <ScalarProperty Name="MusteriId" ColumnName="MusteriId" />
+                <ScalarProperty Name="AracId" ColumnName="AracId" />
+                <ScalarProperty Name="KiralamalarId" ColumnName="KiralamalarId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Musteriler">
             <EntityTypeMapping TypeName="YasinRentACarModel.Musteriler">
               <MappingFragment StoreEntitySet="Musteriler">
-                <ScalarProperty Name="MusteriId" ColumnName="MusteriId" />
-                <ScalarProperty Name="MusteriAdSoyad" ColumnName="MusteriAdSoyad" />
-                <ScalarProperty Name="MusteriNo" ColumnName="MusteriNo" />
-                <ScalarProperty Name="MusteriEklenmeZamani" ColumnName="MusteriEklenmeZamani" />
                 <ScalarProperty Name="İsActive" ColumnName="İsActive" />
+                <ScalarProperty Name="MusteriEklenmeZamani" ColumnName="MusteriEklenmeZamani" />
+                <ScalarProperty Name="MusteriNo" ColumnName="MusteriNo" />
+                <ScalarProperty Name="MusteriAdSoyad" ColumnName="MusteriAdSoyad" />
+                <ScalarProperty Name="MusteriId" ColumnName="MusteriId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="YasinRentACarModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_KiralananAraclar1" FunctionName="YasinRentACarModel.Store.sp_KiralananAraclar1">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="YasinRentACarModel.sp_KiralananAraclar1_Result">
+                <ScalarProperty Name="KiralamalarId" ColumnName="KiralamalarId" />
+                <ScalarProperty Name="MusteriAdSoyad" ColumnName="MusteriAdSoyad" />
+                <ScalarProperty Name="AracModel" ColumnName="AracModel" />
+                <ScalarProperty Name="AlinisTarihi" ColumnName="AlinisTarihi" />
+                <ScalarProperty Name="IadeTarihi" ColumnName="IadeTarihi" />
+                <ScalarProperty Name="TeslimTarihi" ColumnName="TeslimTarihi" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

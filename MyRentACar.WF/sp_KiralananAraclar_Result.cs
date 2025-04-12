@@ -10,20 +10,13 @@
 namespace MyRentACar.WF
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Kiralama
+    public partial class sp_KiralananAraclar_Result
     {
-        public int KiralamalarId { get; set; }
-        public int AracId { get; set; }
-        public int MusteriId { get; set; }
+        public string MusteriAdSoyad { get; set; }
+        public string AracModel { get; set; }
         public System.DateTime AlinisTarihi { get; set; }
         public System.DateTime IadeTarihi { get; set; }
         public System.DateTime TeslimTarihi { get; set; }
-        public bool IsActive { get; set; }
-        public string Aciklama { get; set; }
-    
-        public virtual Araclar Araclar { get; set; }
-        public virtual Musteriler Musteriler { get; set; }
     }
 }
